@@ -1,9 +1,22 @@
 import pandas as pd
 from helpers import *
+import streamlit as st
 
-EXPORT_NAME = "example"
-FILE_LOCATION = "dataset_engie.csv"
-BRAND_VARIANTS = ['engie', 'engi', 'gdf']
+# INTERFACE STREAMLIT
+def streamlit_main():
+    st.title("Cannibalization detector")
+    st.image('./scoring-light.png')
+
+    # Champ de texte pour saisir les requêtes
+    brand_variants_queries_text = st.text_area("Enter the brands variants (one keyword per line):")
+
+    # Champs de saisie pour les paramètres + affichage dans un sidebar
+    with st.sidebar:
+        st.file_uploader("Upload your Search Console CSV's export, please name it 'dataset.csv'")
+
+EXPORT_NAME = "cannibalization_opps"
+FILE_LOCATION = "dataset.csv"
+BRAND_VARIANTS = brand_variants_queries_text.split('\n') if brand_variants_queries_text else []
 
 def job(file_location, brand_variants):
     """
@@ -46,6 +59,10 @@ def job(file_location, brand_variants):
 
 
 # Main script execution
-if __name__ == "__main__":
-    status = job(FILE_LOCATION, BRAND_VARIANTS)
-    print(status)
+if st.button("Go !"):
+    if __name__ == "__main__":
+        status = job(FILE_LOCATION, BRAND_VARIANTS)
+        print(status)
+
+
+st.download_button("Download file", cannibalization_opps)
