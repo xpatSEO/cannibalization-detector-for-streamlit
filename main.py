@@ -12,8 +12,7 @@ def streamlit_main():
     # Champs de saisie pour les paramètres + affichage dans un sidebar
     with st.sidebar:
         st.image('./scoring-light.png')
-        st.title("Upload your Search Console CSV's export, please name it 'dataset.csv'")
-        st.file_uploader(type=['csv'])
+        st.file_uploader("Upload your Search Console CSV's export, please name it 'dataset.csv'")
 
     def job(file_location, brand_variants, brand_input):
         """
@@ -56,17 +55,13 @@ def streamlit_main():
 
     # Main script execution
     if st.button("Go !"):
-        if uploaded_file is not None:
-            #read csv
-            FILE_LOCATION=pd.read_csv(uploaded_file)
-            #EXPORT_NAME = "cannibalization_opps"
-            #FILE_LOCATION = "dataset.csv"
-            BRAND_VARIANTS = brand_input.split('\n') if brand_input else []
-            if __name__ == "__main__":
-                status = job(FILE_LOCATION, BRAND_VARIANTS, brand_input)
-                print(status)
-            st.download_button("Download file", "test")
-            else:
-            st.warning(“you need to upload a csv file.”)
+        #EXPORT_NAME = "cannibalization_opps"
+        FILE_LOCATION = "dataset.csv"
+        BRAND_VARIANTS = brand_input.split('\n') if brand_input else []
+        if __name__ == "__main__":
+            status = job(FILE_LOCATION, BRAND_VARIANTS, brand_input)
+            print(status)
+
+    st.download_button("Download file", "test")
 
 streamlit_main()
