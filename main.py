@@ -55,17 +55,18 @@ def streamlit_main():
         return "Job complete!"
 
     # Main script execution
-    if st.button("Go !") and if uploaded_file is not None:
-        #read csv
-        FILE_LOCATION=pd.read_csv(uploaded_file)
-        #EXPORT_NAME = "cannibalization_opps"
-        #FILE_LOCATION = "dataset.csv"
-        BRAND_VARIANTS = brand_input.split('\n') if brand_input else []
-        if __name__ == "__main__":
-            status = job(FILE_LOCATION, BRAND_VARIANTS, brand_input)
-            print(status)
-        st.download_button("Download file", "test")
-        else:
-        st.warning(“you need to upload a csv file.”)
+    if st.button("Go !"):
+        if uploaded_file is not None:
+            #read csv
+            FILE_LOCATION=pd.read_csv(uploaded_file)
+            #EXPORT_NAME = "cannibalization_opps"
+            #FILE_LOCATION = "dataset.csv"
+            BRAND_VARIANTS = brand_input.split('\n') if brand_input else []
+            if __name__ == "__main__":
+                status = job(FILE_LOCATION, BRAND_VARIANTS, brand_input)
+                print(status)
+            st.download_button("Download file", "test")
+            else:
+            st.warning(“you need to upload a csv file.”)
 
 streamlit_main()
