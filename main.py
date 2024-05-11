@@ -11,7 +11,6 @@ def streamlit_main():
 
     # Champs de saisie pour les paramètres + affichage dans un sidebar
     with st.sidebar:
-        st.image('./scoring-light.png')
         st.file_uploader("Upload your Search Console CSV's export, please name it 'dataset.csv'")
 
     def job(file_location, brand_variants, brand_input):
