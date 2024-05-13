@@ -12,7 +12,7 @@ def streamlit_main():
 
     # Champ de texte pour saisir les requêtes
     brand_input = st.text_area("Firstly, enter the brands variants (one keyword per line):")
-    FILE_LOCATION = st.file_uploader("Then upload your Search Console CSV's export, please name it 'dataset.csv'", ['csv'])
+    FILE_LOCATION = st.file_uploader("Then upload your Search Console CSV's export", ['csv'])
 
     def job(file_location, brand_variants):
         """
