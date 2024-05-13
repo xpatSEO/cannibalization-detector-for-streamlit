@@ -5,7 +5,7 @@ from helpers import *
 # INTERFACE STREAMLIT
 def streamlit_main():
     st.set_page_config(layout="wide")
-    st.title("Cannibalization detector")
+    st.title("Cannibalization detector (v.bêta)")
 
     with st.sidebar:
         st.title("Instructions (upcoming)")
