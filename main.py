@@ -4,20 +4,21 @@ from helpers import *
 
 # INTERFACE STREAMLIT
 def streamlit_main():
+    st.set_page_config(layout="wide")
     st.title("Cannibalization detector")
 
-    # Champ de texte pour saisir les requêtes
-    brand_input = st.text_area("Enter the brands variants (one keyword per line):")
-
-    # Champs de saisie pour les paramètres + affichage dans un sidebar
     with st.sidebar:
-        st.file_uploader("Upload your Search Console CSV's export, please name it 'dataset.csv'")
+        st.title("Instructions (upcoming)")
 
-    def job(file_location, brand_variants, brand_input):
+    # Champ de texte pour saisir les requêtes
+    brand_input = st.text_area("Firstly, enter the brands variants (one keyword per line):")
+    FILE_LOCATION = st.file_uploader("Then upload your Search Console CSV's export, please name it 'dataset.csv'", ['csv'])
+
+    def job(file_location, brand_variants):
         """
         Main function for the job.
         """
-        print('-- Start: Creating primary analysis df')
+        st.text('-- Start: Creating primary analysis df')
         initial_df = pd.read_csv(file_location)
         non_brand_df = initial_df
         not_empty_spaces = all([brand_variant != '' for brand_variant in brand_variants])
@@ -31,13 +32,13 @@ def streamlit_main():
         wip_df = merge_with_page_clicks(wip_df, initial_df)
         wip_df = define_opportunity_levels(wip_df)
         final_df = sort_and_finalize_output(wip_df)
-        print('-- End: Creating primary analysis df')
+        st.text('-- End: Creating primary analysis df')
         
-        print('-- Start: Creating supporting dfs')
+        st.text('-- Start: Creating supporting dfs')
         qa_df = create_qa_dataframe(initial_df, final_df)
         immediate_opps_df = immediate_opps(final_df)
         instructions_df = create_instructions_df()
-        print('-- End: Creating supporting dfs')
+        st.text('-- End: Creating supporting dfs')
         
         dict_of_dfs = {
             "instructions": instructions_df, 
@@ -46,21 +47,22 @@ def streamlit_main():
             "risk_qa_data": qa_df 
         }
         
-        print('-- Start: Creating excel file')
+        st.text('-- Start: Creating excel file')
         create_excel_file(dict_of_dfs, "test")
-        print('-- End: Creating excel file')
+        st.text('-- End: Creating excel file')
         
-        return "Job complete!"
+        st.text('Job complete!')
+        st.subheader("High likelihood opps :")
+        st.dataframe(immediate_opps_df)
+        st.subheader("Global report :")
+        st.dataframe(final_df)
 
     # Main script execution
     if st.button("Go !"):
-        #EXPORT_NAME = "cannibalization_opps"
-        FILE_LOCATION = "dataset.csv"
-        BRAND_VARIANTS = brand_input.split('\n') if brand_input else []
-        if __name__ == "__main__":
-            status = job(FILE_LOCATION, BRAND_VARIANTS, brand_input)
-            print(status)
-
-    st.download_button("Download file", "test")
+        if FILE_LOCATION is not None:
+            BRAND_VARIANTS = brand_input.split('\n') if brand_input else []
+            if __name__ == "__main__":
+                status = job(FILE_LOCATION, BRAND_VARIANTS)
+                st.text(status)
 
 streamlit_main()
